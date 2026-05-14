@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "Driveway",
+    "slug": "driveway-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/bigLogo11.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "backgroundColor": "#E3160B",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "ru.driveway.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/bigLogo11.png",
+        "backgroundColor": "#E3160B"
+      },
+      "package": "ru.driveway.app"
+    },
+    "plugins": [
+      "expo-secure-store",
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Приложению нужен доступ к галерее для установки фото профиля."
+        }
+      ]
+    ]
+  }
+}

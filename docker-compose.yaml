@@ -1,0 +1,59 @@
+services:
+  nginx:
+    image: whnba095/driveway-project-frontend:latest
+    ports:
+      - '8899:80'
+    networks:
+      - app
+    volumes:
+      - ./backend:/var/www/html
+    cap_drop:
+            - ALL
+    cap_add:
+        - NET_BIND_SERVICE
+    restart: on-failure
+    depends_on:
+      - php
+      - mariadb
+  php:
+    image: whnba095/driveway-project-backend:latest
+    networks:
+      - app
+    environment:
+      DB_HOST: '${DB_HOST}'
+      DB_NAME: '${DB_NAME}'
+      DB_USER: '${DB_USER}'
+      DB_PASS: '${DB_PASS}'
+    ports:
+      - '9000:9000'
+    volumes:
+      - ./backend:/var/www/html
+      - ./migrate:/migrate
+    cap_drop:
+            - ALL
+    cap_add:
+        - NET_BIND_SERVICE
+    restart: on-failure
+    depends_on:
+      - mariadb
+  mariadb:
+    image: mariadb:12.2
+    ports:
+      - '3306:3306'
+    networks:
+      - app
+    environment:
+      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+      MYSQL_DATABASE: '${MYSQL_DATABASE}'
+      MYSQL_USER: '${MYSQL_USER}'
+      MYSQL_PASSWORD: '${MYSQL_PASSWORD}' 
+    volumes:                       
+      - mariadb_:/var/lib/mysql
+      - ./migrate:/docker-entrypoint-initdb.d
+
+volumes:
+  mariadb_:
+
+networks:
+  app:
+    driver: bridge

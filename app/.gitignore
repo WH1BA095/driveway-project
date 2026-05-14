@@ -1,0 +1,25 @@
+# Зависимости
+node_modules/
+
+# Expo
+.expo/
+.expo-shared/
+dist/
+
+# Нативные сборки
+ios/
+android/
+
+# Env файлы
+.env
+.env.local
+.env.*.local
+
+# Логи
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# macOS
+.DS_Store

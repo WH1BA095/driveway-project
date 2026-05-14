@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: PHPUnit tests
+        run: |
+          echo "=== PHP ==="
+          cd tests/backend
+          composer install --no-interaction
+          ./vendor/bin/phpunit
+
+      - name: Run app tests
+        run: |
+          
+          echo "=== JS ==="
+          cd tests/app
+          npm ci
+          npm test
+
+  docker:
+    runs-on: ubuntu-24.04
+    needs: ci
+    env:
+      USER: ${{ secrets.DOCKER_USER }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build and push php backend
+        uses: docker/build-push-action@v7
+        with:
+          context: ./php
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ env.USER }}/driveway-project-backend:latest
+        
+      - name: Build and push nginx
+        uses: docker/build-push-action@v7
+        with:
+          context: ./nginx
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags:  ${{ env.USER }}/driveway-project-frontend:latest
+        

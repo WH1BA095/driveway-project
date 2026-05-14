@@ -1,0 +1,21 @@
+# БД конфиг (содержит пароли — не коммитить!)
+config/db.php
+
+# Загруженные пользователями файлы
+#img/products/
+#img/avatars/
+
+# Логи
+*.log
+error_log
+
+# macOS
+.DS_Store
+Icon
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
