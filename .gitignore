@@ -1,2 +1,4 @@
 .env
 tests/backend/.phpunit.result.cache
+.DS_Store
+**/.DS_Store
